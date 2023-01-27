@@ -4,7 +4,7 @@ The devs at Metaplex created Shank & Solita for native Solana programs to be abl
 
 ### Shank
 
-Shank is the Rust crate responsible for generating an IDL for your program.   
+[Shank](https://docs.metaplex.com/developer-tools/shank) is the Rust crate responsible for generating an IDL for your program.   
    
 It's super easy to use in your Rust code:   
    
@@ -60,7 +60,35 @@ declare_id!("8avNGHVXDwsELJaWMSoUZ44CirQd4zyU9Ez4ZmP4jNjZ");
 
 ### Solita
 
-Solita is the JavaScript SDK responsible for building client-side SDK types from your program's IDL.
+[Solita](https://docs.metaplex.com/developer-tools/solita/) is the JavaScript SDK responsible for building client-side SDK types from your program's IDL.
 
 > Note: Solita will work with an IDL from Shank or from Anchor!
 
+First add Solita to your project:
+```shell
+yarn add -D @metaplex-foundation/solita
+```
+Then add a Solita config `.solitarc.js`:
+```javascript
+const path = require('path');
+const programDir = path.join(__dirname, 'program');
+const idlDir = path.join(programDir, 'idl');
+const sdkDir = path.join(__dirname, 'tests', 'generated');
+const binaryInstallDir = path.join(__dirname, '.crates');
+
+module.exports = {
+  idlGenerator: 'shank',
+  programName: 'car_rental_service',
+  idlDir,
+  sdkDir,
+  binaryInstallDir,
+  programDir,
+};
+```
+
+Once you've got that file configured to match your repository layout, go ahead and run:
+```shell
+yarn solita
+```
+
+That should build all your types from your IDL! Check for a folder called `generated` to see them!
